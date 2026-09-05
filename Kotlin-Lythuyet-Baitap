@@ -1,0 +1,66 @@
+data class SINHVIEN(
+	val id: String,
+    val fullname: String,
+    val age: Int,
+    val major: String,
+    val gpa: Double
+)
+fun DSSINHVIEN(): List<SINHVIEN> {
+    return listOf(
+    	SINHVIEN("SV001", "Trần Thanh Tài", 20, "Công nghệ thông tin", 5.5),
+        SINHVIEN("SV002", "Nguyễn Thành Sinh", 28, "Công nghệ phần mềm", 7.8),
+        SINHVIEN("SV003", "Trần Văn Định", 30, "Công nghệ Iot", 7.9),
+        SINHVIEN("SV004", "Bùi Quang Huy", 21, "Khoa học dữ liệu", 7.0),
+        SINHVIEN("SV005", "Nguyễn Lê Thành Huy", 24, "Kỹ thuật ô tô", 6.0),
+        SINHVIEN("SV006", "Phạm Tấn Vũ", 25, "Tự động hoá", 8.6)
+    )
+}
+fun Demgpalonhon8(list: List<SINHVIEN>) = list.count { it.gpa >= 8.0 }
+
+fun Demgpanhohon5(list: List<SINHVIEN>) = list.count { it.gpa < 5.0 }
+
+fun Tinhgpa(list: List<SINHVIEN>, targetMajor: String): Double {
+    val Chuyennganh = list.filter { it.major == targetMajor }
+    return if (Chuyennganh.isNotEmpty()) Chuyennganh.map { it.gpa }.average() else 0.0
+}
+
+fun Gpacaonhat(list: List<SINHVIEN>) = list.maxByOrNull { it.gpa }
+
+fun Tuoicaonhat(list: List<SINHVIEN>) = list.maxByOrNull { it.age }
+
+fun GpaTB(list: List<SINHVIEN>) = list.filter { it.gpa in 7.0..8.5 }
+
+fun AllSV(list: List<SINHVIEN>, targetMajor: String) = list.filter { it.major == targetMajor }
+
+fun TimtenSV(list: List<SINHVIEN>, keyword: String) = list.filter { it.fullname.contains(keyword, ignoreCase = true) }
+
+fun Sapxep(list: List<SINHVIEN>) = list.sortedByDescending { it.gpa }
+
+fun Top3max(list: List<SINHVIEN>) = Sapxep(list).take(3)
+
+fun Sapxeptheotuoi(list: List<SINHVIEN>) = list.sortedBy { it.age }
+
+fun Sapxeptheoten(list: List<SINHVIEN>) = list.sortedBy { it.fullname }
+fun Ketqua(students: List<SINHVIEN>) {
+    println("1. Số SV có GPA >= 8.0: ${Demgpalonhon8(students)}")
+    println("2. Số SV có GPA < 5.0: ${Demgpanhohon5(students)}")
+    println("3. GPA trung bình ngành 'Công nghệ thông tin': ${Tinhgpa(students, "Công nghệ thông tin")}")
+    
+    val Gpamax = Gpacaonhat(students)
+    println("4. SV có GPA cao nhất: ${Gpamax?.fullname} (GPA: ${Gpamax?.gpa})")
+    
+    val Agemax = Tuoicaonhat(students)
+    println("5. SV lớn tuổi nhất: ${Agemax?.fullname} (${Agemax?.age} tuổi)")
+    
+    println("6. SV có GPA từ 7.0 -> 8.5: ${GpaTB(students).joinToString { it.fullname }}")
+    println("7. SV ngành Lập trình mạng: ${AllSV(students, "Lập trình mạng").joinToString { it.fullname }}")
+    println("8. SV chứa tên 'Tài': ${TimtenSV(students, "Tài").joinToString { it.fullname }}")
+    println("9. Danh sách giảm dần theo GPA: ${Sapxep(students).joinToString { "${it.fullname}(${it.gpa})" }}")
+    println("10. Top 3 SV GPA cao nhất: ${Top3max(students).joinToString { it.fullname }}")
+    println("11. Sắp xếp tuổi tăng dần: ${Sapxeptheotuoi(students).joinToString { "${it.fullname}(${it.age})" }}")
+    println("12. Sắp xếp tên A-Z: ${Sapxeptheoten(students).joinToString { it.fullname }}")
+}
+fun main() {
+    val Sinhviens = DSSINHVIEN()
+    Ketqua(Sinhviens)
+}
